@@ -1,19 +1,22 @@
 // import logo from './logo.svg';
 import './App.css';
-import React, {useState} from "react"
+import {useState} from "react"
 import Title from './Components/Title'
 import Modal from './Components/Modal'
+import EventList from './Components/EventList'
+import NewEventForm from './Components/NewEventForm'
 
 function App() {
   const [showModal, setShowModal] = useState(false)
   const [showEvents, setShowEvents] = useState(true)
-  const [events, setEvents] = useState([
-    {title: "Practicar js", id:1},
-    {title: "Ver videos de Youtube", id:2},
-    {title: "Estudiar más programación", id:3}
-  ])
+  const [events, setEvents] = useState([])
 
-  console.log(showModal) 
+  const addEvent = (event) => {
+    setEvents((prevEvents) => {
+      return [...prevEvents, event]
+    })
+    setShowModal(false)
+  }
 
   const handleClick = (id) => {
     setEvents((prevEvents) => {
@@ -21,50 +24,38 @@ function App() {
         return id !== event.id
       })
     })
-    console.log(id)
+    // console.log(id)
   }
 
-  const handleClose = () => {
-    setShowModal(false)
-  }
-
-  const subtitle = "All the latest events in Kaiko's mind"
+  const subtitle = "Todos los eventos dentro de la mente de Kaiko"
 
   return (
     <div className="App">
-      <Title title="Events in your area" subtitle={subtitle} />
+      <Title title="Eventos en tu área" subtitle={subtitle} />
 
       {showEvents && (
-        <div>
+        <div className="hide-events">
           <button onClick={() => setShowEvents(false)}>Hide events</button>
         </div>
       )}
 
       {!showEvents && (
-        <div>
+        <div className="show-events">
           <button onClick={() => setShowEvents(true)}>Show events</button>
         </div>
       )}
 
-      {showEvents && events.map((event) => (
-        <React.Fragment key={event.id}>
-          <h2>{event.id} - {event.title}</h2>
-          <button onClick={() => handleClick(event.id)}>Delete event</button>
-        </React.Fragment>
-      ))}
+      {showEvents && <EventList events={events} handleClick={handleClick}/>}
 
-      {showModal && <Modal handleClose={handleClose}>
-        <h2>10% Off coupon code!</h2>
-        <p>Use the code KAIKOSAMA at the checkout.</p>
+      {showModal && <Modal isSalesModal={true}>
+        <NewEventForm addEvent={addEvent}/>
       </Modal>}
 
-      <div>
-        <button onClick={() => {setShowModal(true)}}>Show Modal</button>
+      <div className="show-modal">
+        <button onClick={() => {setShowModal(true)}}>Add new event</button>
       </div>
     </div>
   );
 }
 
 export default App;
-
-// TODO: Sección 33 min 1:42
