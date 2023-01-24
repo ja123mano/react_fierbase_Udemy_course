@@ -6,16 +6,21 @@ import Home from "./Pages/home/Home"
 import Create from "./Pages/create/Create"
 import Search from "./Pages/search/Search"
 import Recipe from "./Pages/recipe/Recipe"
+import ThemeSelector from "./Components/ThemeSelector"
+import { useTheme } from "./Hooks/UseTheme"
 
 // styles
 import "./App.css"
 
 function App() {
+  const { mode } = useTheme()
+
   return (
-    <div className="App">
+    <div className={`App ${mode}`}>
       <BrowserRouter>
 
         <Navbar />
+        <ThemeSelector />
 
         <Switch>
 
