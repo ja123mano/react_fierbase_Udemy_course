@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { useFetch } from "../../Hooks/useFetch"
+import { useTheme } from "../../Hooks/UseTheme"
 
 // styles
 import "./Create.css"
@@ -13,6 +14,7 @@ export default function Create() {
   const [ingredients, setIngredients] = useState([])
   const ingredientInput = useRef(null)
   const history = useHistory()
+  const { mode } = useTheme()
 
   const { postData, data, error } = useFetch("http://localhost:3000/recipes", "POST")
 
@@ -42,7 +44,7 @@ export default function Create() {
   }, [data, history])
 
   return (
-    <div className="create">
+    <div className={`create ${mode}`}>
       <h2 className="page-title">Add a New Recipe</h2>
 
       <form onSubmit={handleSubmit}>
@@ -80,7 +82,7 @@ export default function Create() {
         </label>
 
         <label>
-          <span>Coockint time (minutes):</span>
+          <span>Cooking time (minutes):</span>
           <input
             type="number"
             onChange={(e) => setCookingTime(e.target.value)}
