@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom"
 import { useTheme } from "../Hooks/UseTheme"
+import Trashcan from "../Assets/delete-icon.svg"
+import { projectFirestore } from "../Firebase/config"
 
 // styles
 import "./RecipeList.css"
@@ -15,6 +17,10 @@ export default function RecipeList({recipes}) {
             </div>
   }
 
+  const handleClick = (id) => {
+    projectFirestore.collection("recipes").doc(id).delete()
+  }
+
   return (
     <div className="recipe-list">
       {recipes.map(recipe => (
@@ -26,6 +32,13 @@ export default function RecipeList({recipes}) {
           <div>{recipe.method.substring(0, 100)}...</div>
           
           <Link to={`/recipes/${recipe.id}`}>Cook this</Link>
+
+          <img
+            className="delete"
+            src={Trashcan}
+            onClick={() => handleClick(recipe.id)}
+            alt=""
+          />
         </div>
       ))}
     </div>
